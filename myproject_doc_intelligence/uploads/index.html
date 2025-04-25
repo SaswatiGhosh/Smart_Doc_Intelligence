@@ -1,0 +1,77 @@
+import React from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+import { ShoppingBag, Shirt } from "lucide-react";
+
+const tshirts = [
+  {
+    title: "Vintage Vibe",
+    price: "$25",
+    image: "https://via.placeholder.com/300x300?text=Vintage+Vibe",
+  },
+  {
+    title: "Minimalist Magic",
+    price: "$22",
+    image: "https://via.placeholder.com/300x300?text=Minimalist+Magic",
+  },
+  {
+    title: "Bold & Bright",
+    price: "$28",
+    image: "https://via.placeholder.com/300x300?text=Bold+%26+Bright",
+  },
+];
+
+export default function TshirtStore() {
+  return (
+    <div className="min-h-screen bg-gradient-to-r from-pink-100 to-yellow-100 p-6">
+      <motion.h1
+        initial={{ y: -40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="text-4xl font-extrabold text-center text-pink-700 mb-10"
+      >
+        Custom Printed T-Shirts
+      </motion.h1>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        {tshirts.map((shirt, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: idx * 0.2 }}
+          >
+            <Card className="rounded-2xl bg-white shadow-lg hover:shadow-2xl transition">
+              <CardContent className="p-4 text-center">
+                <img
+                  src={shirt.image}
+                  alt={shirt.title}
+                  className="rounded-xl w-full mb-4"
+                />
+                <h2 className="text-xl font-semibold text-gray-800 mb-1">
+                  {shirt.title}
+                </h2>
+                <p className="text-gray-600 mb-3">{shirt.price}</p>
+                <Button className="bg-pink-600 text-white hover:bg-pink-700 w-full">
+                  <ShoppingBag className="mr-2 h-4 w-4" /> Buy Now
+                </Button>
+              </CardContent>
+            </Card>
+          </motion.div>
+        ))}
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.2 }}
+        className="mt-16 text-center"
+      >
+        <Button className="bg-yellow-500 text-white px-8 py-3 text-lg rounded-full shadow-md hover:bg-yellow-600">
+          View All Designs
+        </Button>
+      </motion.div>
+    </div>
+  );
+}
