@@ -12,15 +12,16 @@ def upload_file_to_s3(file, name, content_type) -> bool:
         aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
         region_name=settings.AWS_S3_REGION_NAME,
     )
-
+    print(content_type)
     try:
-        response = s3_client.upload_fileobj(
-            file,
-            settings.AWS_STORAGE_BUCKET_NAME,
-            name,
-            ExtraArgs={"ContentType": content_type},
-        )
-        print(response)
+        with open(file, 'rb+') as f:
+            response = s3_client.upload_fileobj(
+                f,
+                settings.AWS_STORAGE_BUCKET_NAME,
+                name,
+                ExtraArgs={"ContentType": content_type},
+            )
+            print(response)
     except ClientError as e:
         logging.error(e)
         return False

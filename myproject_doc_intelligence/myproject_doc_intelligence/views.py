@@ -31,7 +31,7 @@ def upload_view(request):
         with open(file_path, "wb+") as destination:
             for chunk in file.chunks():
                 destination.write(chunk)
-        if upload_file_to_s3(file, file_name, file_content_type):
+        if upload_file_to_s3(file_path, file_name, file_content_type):
             return redirect("chat")
     return render(request, "upload.html")
 
