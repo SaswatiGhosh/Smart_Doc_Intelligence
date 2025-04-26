@@ -8,4 +8,5 @@ dependencies = [
     "boto3>=1.38.3",
     "django>=5.2",
     "django-tailwind>=4.0.1",
+    "python-dotenv>=1.1.0",
 ]

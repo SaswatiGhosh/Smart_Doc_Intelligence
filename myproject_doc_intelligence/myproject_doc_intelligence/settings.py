@@ -10,11 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+from dotenv import load_dotenv
 from pathlib import Path
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -128,7 +132,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 
 
-AWS_ACCESS_KEY_ID = "AKIATG6MGNBPGA4AJMGM"
-AWS_SECRET_ACCESS_KEY = "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"
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = "smart-docs-user-uploads"
 AWS_S3_REGION_NAME = "ap-south-1"
