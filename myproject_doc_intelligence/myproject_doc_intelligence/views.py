@@ -27,12 +27,15 @@ def upload_view(request):
         file_name = file.name
         file_content_type = file.content_type
         print(file)
-        file_path = os.path.join("uploads/", file.name)
+        user_id = request.user.id if request.user.is_authenticated else "anonymous"
+        file_path = os.path.join("uploads/", user_id + file_name)
         with open(file_path, "wb+") as destination:
             for chunk in file.chunks():
                 destination.write(chunk)
-        if upload_file_to_s3(file_path, file_name, file_content_type):
+        if upload_file_to_s3(file_path,user_id+ "_" + file_name, file_content_type):
+            
             return redirect("chat")
+        
     return render(request, "upload.html")
 
 
