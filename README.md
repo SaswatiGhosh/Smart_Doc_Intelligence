@@ -13,6 +13,8 @@
 
 -   **uv add** should be used to add dependencies in the .toml file
 
+-   Use **git and uv add** operation in the parent folder
+
 #### To install packages from .toml file
 
 > uv pip install -r pyproject.toml

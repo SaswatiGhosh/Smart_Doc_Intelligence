@@ -18,6 +18,28 @@ def login_view(request):
     return render(request, "login.html")
 
 
+"""
+This method is to edit the name of the file that is being uploaded.
+Files having anything apart from alphanumeric chars, dots and underscore were not working.
+Textract were not picking up the file name
+"""
+
+
+def fileNameEdit(name):
+    name = name.lower()
+    editedName = ""
+    c = 0
+    for i in name:
+        if c > 15:
+            break
+        if 97 <= ord(i) <= 122 or 48 <= ord(i) <= 57:
+            editedName += i
+        else:
+            editedName += "_"
+        c += 1
+    return editedName
+
+
 # @login_required
 
 
@@ -25,17 +47,21 @@ def upload_view(request):
     if request.method == "POST":
         file = request.FILES["file"]
         file_name = file.name
+        file_extension = file_name[file_name.rfind(".") :]
+
         file_content_type = file.content_type
-        print(file)
+
+        file_name = fileNameEdit(file.name) + file_extension
+
         user_id = request.user.id if request.user.is_authenticated else "anonymous"
-        file_path = os.path.join("uploads/", user_id + file_name)
+        file_path = os.path.join("uploads/", user_id + "_" + file_name)
         with open(file_path, "wb+") as destination:
             for chunk in file.chunks():
                 destination.write(chunk)
-        if upload_file_to_s3(file_path,user_id+ "_" + file_name, file_content_type):
-            
+        if upload_file_to_s3(file_path, user_id + "_" + file_name, file_content_type):
+
             return redirect("chat")
-        
+
     return render(request, "upload.html")
 
 
