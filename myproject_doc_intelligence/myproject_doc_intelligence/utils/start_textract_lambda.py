@@ -2,18 +2,21 @@
 # Lambda 2 (process_textract_result_lambda): Triggered by SNS, fetches the Textract job results and logs extracted text.
 
 
-
 import boto3
 import json
+import logging
 
-textract=boto3.client('textract')
+logger = logging.getLogger()
+textract = boto3.client("textract", region_name="ap-south-1")
 
-def lambda_handler(event ,context):
+
+def lambda_handler(event, context):
     print("Recieved JSON", json.dumps(event))
 
-# Extract bucket and file name
-    bucket=event['Records'][0]['s3']['bucket']['name']
-    document_key= ['Records'][0]['s3']['object']['key']
+    # Extract bucket and file name
+    bucket = event["Records"][0]["s3"]["bucket"]["name"]
+    document_key = event["Records"][0]["s3"]["object"]["key"]
+    print(f"Bucket: {bucket}, Key: {document_key}")
 
   # Start Textract analysis job
     response=textract.start_document_analysis(
@@ -26,15 +29,12 @@ def lambda_handler(event ,context):
             },          
             'FeatureTypes': ['TABLES', 'FORMS'],
             'NotificationChannel' :{
-            'RoleArn': 'arn:aws:iam::221082183774:role/TextractServiceNewRole',
+            'RoleArn': 'arn:aws:iam::221082183774:role/TextractServiceRole',
             'SNSTopicArn': 'arn:aws:sns:ap-south-1:221082183774:TextractTopic'
             },
         }
     )
-    job_id=response['JobId']
+    job_id=response['Job ID']
     print(f"Started Textract job with ID: {job_id}")
 
-    return {
-        'statusCode': 200,
-        'body': json.dumps(f"Started Textract job: {job_id}")
-    }
+    return {"statusCode": 200, "body": json.dumps(f"Started Textract job: {job_id}")}

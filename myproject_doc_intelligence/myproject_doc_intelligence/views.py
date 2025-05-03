@@ -38,6 +38,28 @@ def fileNameEdit(name):
         c += 1
     return e
 
+"""
+This method is to edit the name of the file that is being uploaded.
+Files having anything apart from alphanumeric chars, dots and underscore were not working.
+Textract were not picking up the file name
+"""
+
+
+def fileNameEdit(name):
+    name = name.lower()
+    editedName = ""
+    c = 0
+    for i in name:
+        if c > 15:
+            break
+        if 97 <= ord(i) <= 122 or 48 <= ord(i) <= 57:
+            editedName += i
+        else:
+            editedName += "_"
+        c += 1
+    return editedName
+
+
 # @login_required
 
 def upload_view(request):
