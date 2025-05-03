@@ -4,10 +4,10 @@ import boto3
 
 textract=boto3.client('textract')
 def lambda_handler(event, context):
-    print("Recieved SNS notification", json.dump(event))
+    print("Recieved SNS notification", json.dumps(event))
 
 #Extract JobID from SNS
-    message=json.loads(event['Records'][0]['sns']['message'])
+    message=json.loads(event['Records'][0]['Sns']['Message'])
     job_id = message['JobId']
     status = message['Status']
 
@@ -20,11 +20,11 @@ def lambda_handler(event, context):
             'body': json.dumps('Textract job failed or incomplete.')
         }
     #Get textract result
-    response=textract.get_document_analysis(JobID=job_id)
+    response=textract.get_document_analysis(JobId=job_id)
     blocks=response.get('Blocks',[])
 
     #extracted text to be displayed
-    extracted_lines=[ block['Text'] for block in blocks if ['BlockType']=='LINE']
+    extracted_lines=[ block['Text'] for block in blocks if block['BlockType']=='LINE']
 
     print('Extracted lines')
 

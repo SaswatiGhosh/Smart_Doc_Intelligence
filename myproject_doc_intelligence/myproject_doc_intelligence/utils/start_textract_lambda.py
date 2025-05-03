@@ -26,12 +26,12 @@ def lambda_handler(event ,context):
             },          
             'FeatureTypes': ['TABLES', 'FORMS'],
             'NotificationChannel' :{
-            'RoleArn': 'arn:aws:iam::221082183774:role/TextractServiceRole',
+            'RoleArn': 'arn:aws:iam::221082183774:role/TextractServiceNewRole',
             'SNSTopicArn': 'arn:aws:sns:ap-south-1:221082183774:TextractTopic'
             },
         }
     )
-    job_id=response['Job ID']
+    job_id=response['JobId']
     print(f"Started Textract job with ID: {job_id}")
 
     return {

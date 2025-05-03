@@ -16,3 +16,8 @@
 #### To install packages from .toml file
 
 > uv pip install -r pyproject.toml
+
+
+WORKFLOW
+
+File uploaded to S3 → Lambda 1 runs → Textract job starts → on job completion, SNS sends notification → Lambda 2 is triggered, processes the results, and logs the extracted lines.
