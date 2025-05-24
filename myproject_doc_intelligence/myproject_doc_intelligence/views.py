@@ -18,7 +18,6 @@ def login_view(request):
     return render(request, "login.html")
 
 
-
 """
 This method is to edit the name of the file that is being uploaded.
 Files having anything apart from alphanumeric chars, dots and underscore were not working.
@@ -43,6 +42,7 @@ def fileNameEdit(name):
 
 # @login_required
 
+
 def upload_view(request):
     if request.method == "POST":
         file = request.FILES["file"]
@@ -59,11 +59,9 @@ def upload_view(request):
             for chunk in file.chunks():
                 destination.write(chunk)
         if upload_file_to_s3(file_path, user_id + "_" + file_name, file_content_type):
-
             return redirect("chat")
 
     return render(request, "upload.html")
-  
 
 
 # @login_required

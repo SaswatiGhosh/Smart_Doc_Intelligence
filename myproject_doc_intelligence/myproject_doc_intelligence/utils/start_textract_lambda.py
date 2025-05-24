@@ -7,36 +7,39 @@ import json
 import logging
 
 logger = logging.getLogger()
-textract=boto3.client('textract', region_name='ap-south-1')
+textract = boto3.client("textract", region_name="ap-south-1")
 
-def lambda_handler(event ,context):
+
+def lambda_handler(event, context):
     print("Recieved JSON", json.dumps(event))
 
     # Extract bucket and file name
-    bucket=event['Records'][0]['s3']['bucket']['name']
-    document_key=event['Records'][0]['s3']['object']['key']
+    bucket = event["Records"][0]["s3"]["bucket"]["name"]
+    document_key = event["Records"][0]["s3"]["object"]["key"]
     print(f"Bucket: {bucket}, Key: {document_key}")
-    
+
     # Start Textract analysis job
-    response=textract.start_document_analysis(
-        DocumentLocation = {
-            'S3Object':
-            {
-                'Bucket':bucket,
-                'Name': document_key,
+    response = textract.start_document_analysis(
+        DocumentLocation={
+            "S3Object": {
+                "Bucket": bucket,
+                "Name": document_key,
             }
-        },          
-        FeatureTypes = ['TABLES', 'FORMS'],
-        NotificationChannel = {
-            'RoleArn': 'arn:aws:iam::221082183774:role/TextractServiceNewRole',
-            'SNSTopicArn': 'arn:aws:sns:ap-south-1:221082183774:TextractTopic'
-        }
+        },
+        FeatureTypes=["TABLES", "FORMS"],
+        NotificationChannel={
+            "RoleArn": "arn:aws:iam::080636249926:role/TextractServiceNewRole",
+            "SNSTopicArn": "arn:aws:sns:ap-south-1:080636249926:process-textract",
+        },
     )
     print("Textract response", response)
-    job_id=response['JobId']
+    statusCode = response["ResponseMetadata"]["HTTPStatusCode"]
+    job_id = response["JobId"]
     print(f"Started Textract job with ID: {job_id}")
 
-    
-    return {"statusCode": 200, 
-        "body": json.dumps(f"Started Textract job: {job_id}"), 
-        "document_key": document_key}
+    return {
+        "statusCode": statusCode,
+        "job_id": job_id,
+        "body": json.dumps(f"Started Textract job: {job_id}"),
+        "document_key": document_key,
+    }
