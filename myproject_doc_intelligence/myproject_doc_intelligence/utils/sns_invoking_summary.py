@@ -15,8 +15,8 @@ def sns_invoking_summary():
         response = table.get_item(
             Key={"user_id": "anonymous", "file_name": settings.FILE_NAME}
         )
-        story = response["Item"]["lines"]
-        if story:
+        if response:
+            story = response["Item"]["lines"]
             break
         time.sleep(2)
     model = genai.GenerativeModel("gemini-1.5-flash")
