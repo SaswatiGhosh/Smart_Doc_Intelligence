@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
+from django.conf import settings
+from .utils import sns_invoking_summary
 from .utils.s3_upload import upload_file_to_s3
 import os
 
@@ -41,8 +43,6 @@ def fileNameEdit(name):
 
 
 # @login_required
-
-
 def upload_view(request):
     if request.method == "POST":
         file = request.FILES["file"]
@@ -52,20 +52,23 @@ def upload_view(request):
         file_content_type = file.content_type
 
         file_name = fileNameEdit(file.name) + file_extension
-
         user_id = request.user.id if request.user.is_authenticated else "anonymous"
         file_path = os.path.join("uploads/", user_id + "_" + file_name)
+
+        file_name = user_id + "_" + file_name
+        settings.FILE_NAME = file_name
+
         with open(file_path, "wb+") as destination:
             for chunk in file.chunks():
                 destination.write(chunk)
-        if upload_file_to_s3(file_path, user_id + "_" + file_name, file_content_type):
+        if upload_file_to_s3(file_path, file_name, file_content_type):
             return redirect("chat")
 
     return render(request, "upload.html")
 
 
 # @login_required
-
-
 def chat_view(request):
-    return render(request, "chat.html")
+    model_response = sns_invoking_summary.sns_invoking_summary()
+    context = {"message": model_response}
+    return render(request, "chat.html", context)

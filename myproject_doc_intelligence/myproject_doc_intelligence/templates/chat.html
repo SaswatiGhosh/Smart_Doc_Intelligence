@@ -1,23 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="p-6">
-    <h2 class="text-2xl font-bold mb-4">Chat Interface</h2>
-    <div class="border p-4 h-60 overflow-auto mb-4" id="chat-box"></div>
-    <input type="text" id="message-input" class="w-full p-2 border rounded mb-2" placeholder="Type your message...">
-    <button onclick="sendMessage()" class="bg-blue-500 text-white py-2 px-4 rounded">Send</button>
-    <button onclick="generateSummary()" class="bg-yellow-500 text-white py-2 px-4 rounded ml-2">Summary</button>
+    <head>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="p-6">
+        <h2 class="text-2xl font-bold mb-4">Chat Interface</h2>
+        <div class="border p-4 h-60 overflow-auto mb-4" id="chat-box"></div>
+        <input
+            type="text"
+            id="message-input"
+            class="w-full p-2 border rounded mb-2"
+            placeholder="Type your message..."
+        />
+        <button
+            onclick="sendMessage()"
+            class="bg-blue-500 text-white py-2 px-4 rounded"
+        >
+            Send
+        </button>
+        <button
+            onclick="generateSummary()"
+            class="bg-yellow-500 text-white py-2 px-4 rounded ml-2"
+        >
+            Summary
+        </button>
 
-    <script>
-        function sendMessage() {
-            let input = document.getElementById("message-input").value;
-            document.getElementById("chat-box").innerHTML += `<p class='p-2 bg-gray-200 rounded mb-2'>You: ${input}</p>`;
-        }
-        function generateSummary() {
-            alert("Summary feature coming soon!");
-        }
-    </script>
-</body>
+        <script>
+            function sendMessage() {
+                let input = document.getElementById("message-input").value;
+                document.getElementById(
+                    "chat-box"
+                ).innerHTML += `<p class='p-2 bg-gray-200 rounded mb-2'>You: ${input}</p>`;
+            }
+            function generateSummary() {
+                document.getElementById(
+                    "chat-box"
+                ).innerHTML += `<p class='p-2 bg-gray-200 rounded mb-2'>Summary: {{message}}</p>`;
+            }
+        </script>
+    </body>
 </html>
