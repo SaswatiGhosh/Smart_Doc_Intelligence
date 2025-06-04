@@ -69,6 +69,13 @@ def upload_view(request):
 
 # @login_required
 def chat_view(request):
-    model_response = sns_invoking_summary.sns_invoking_summary()
-    context = {"message": model_response}
+    context = {}
+    if settings.FILE_NAME == "":
+        return redirect("upload")
+
+    if request.method == "POST":
+        message = request.POST.get("message", "")
+        action = request.POST.get("action")
+        model_response = sns_invoking_summary.sns_invoking_summary(action, message)
+        context = {"messages": model_response}
     return render(request, "chat.html", context)
