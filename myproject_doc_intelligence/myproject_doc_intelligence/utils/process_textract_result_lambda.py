@@ -50,8 +50,8 @@ def lambda_handler(event, context):
     extracted_lines = clean_lines(extracted_lines)
 
     print(extracted_lines)
-
-    stored_lines = store_lines_in_dynamoDB(extracted_lines, file_name)
+    lines = list(extracted_lines)
+    stored_lines = store_lines_in_dynamoDB(lines, file_name)
 
     return {
         "statusCode": 200,
