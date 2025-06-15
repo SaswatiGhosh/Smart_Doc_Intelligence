@@ -1,0 +1,16 @@
+<nav
+    class="bg-blue-600 text-white px-6 py-4 shadow-md flex items-center justify-between w-full"
+>
+    <div class="space-x-4">
+        <a href="{% url 'home' %}" class="hover:text-gray-200">Home</a>
+        <a href="{% url 'signup' %}" class="hover:text-gray-200">Signup</a>
+        <a href="{% url 'login' %}" class="hover:text-gray-200">Login</a>
+        <a href="{% url 'upload' %}" class="hover:text-gray-200">Upload</a>
+    </div>
+    {% if user.is_authenticated %}
+    <div class="flex items-center space-x-4">
+        <span class="font-semibold">Hello, {{ user.username }}!</span>
+        <a href="{% url 'logout' %}" class="hover:text-gray-200">Logout</a>
+    </div>
+    {% endif %}
+</nav>

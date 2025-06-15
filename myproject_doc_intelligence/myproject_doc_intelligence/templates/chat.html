@@ -35,42 +35,56 @@
             }
         </style>
     </head>
-    <body class="body p-6">
-        <h2 class="text-2xl font-bold mb-4">Chat Interface</h2>
-        <div class="border p-4 overflow-auto mb-4" id="chat-box">
-            {% for msg in messages %}
-            <p class="chat-message p-2 bg-gray-200 rounded mb-2">
-                <strong>{{ msg.sender }}:</strong> {{ msg.text }}
-            </p>
-            {% endfor %}
-        </div>
-        <form method="post">
-            {% csrf_token %}
-            <input
-                type="text"
-                name="message"
-                class="w-full p-2 border rounded mb-2"
-                placeholder="Type your message..."
-            />
-            <div>
-                <button
-                    type="submit"
-                    name="action"
-                    value="send"
-                    class="bg-blue-500 text-white py-2 px-4 rounded"
+    <body class="body">
+        {% include 'navbar.html' %}
+        <div
+            class="h-screen flex flex-col justify-center justify-around items-center"
+        >
+            <div class="h-screen w-full">
+                <h2 class="text-2xl font-bold mb-4 text-center">
+                    Chat Interface
+                </h2>
+                <div
+                    class="border p-4 overflow-auto mb-4 min-h-3/4"
+                    id="chat-box"
                 >
-                    Send
-                </button>
-                <button
-                    type="submit"
-                    name="action"
-                    value="summary"
-                    class="bg-yellow-500 text-white py-2 px-4 rounded ml-2"
-                >
-                    Summary
-                </button>
+                    {% for msg in messages %}
+                    <p class="chat-message p-2 bg-gray-200 rounded mb-2">
+                        <strong>{{ msg.sender }}:</strong> {{ msg.text }}
+                    </p>
+                    {% endfor %}
+                </div>
+                <div class="align-baseline">
+                    <form method="post">
+                        {% csrf_token %}
+                        <input
+                            type="text"
+                            name="message"
+                            class="w-full p-2 border rounded mb-2"
+                            placeholder="Type your message..."
+                        />
+                        <div>
+                            <button
+                                type="submit"
+                                name="action"
+                                value="send"
+                                class="bg-blue-500 text-white py-2 px-4 rounded"
+                            >
+                                Send
+                            </button>
+                            <button
+                                type="submit"
+                                name="action"
+                                value="summary"
+                                class="bg-yellow-500 text-white py-2 px-4 rounded ml-2"
+                            >
+                                Summary
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </form>
+        </div>
 
         <script>
             window.onload = function () {

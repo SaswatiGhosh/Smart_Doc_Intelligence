@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib import messages
 from django.http import JsonResponse
 from django.conf import settings
@@ -9,15 +10,58 @@ from .utils.s3_upload import upload_file_to_s3
 import os
 
 
+def home_view(request):
+    return
+
+
 def login_view(request):
     if request.method == "POST":
-        user = authenticate(
-            username=request.POST["username"], password=request.POST["password"]
-        )
+        username = request.POST["username"]
+        password = request.POST["password"]
+
+        user = authenticate(username=username, password=password)
+
         if user:
             login(request, user)
+            print("Here")
+            messages.success(request, f"Welcome back, {username}!")
             return redirect("upload")
+        else:
+            messages.error(request, "Invalid username or password.")
+            return redirect("login")
+
     return render(request, "login.html")
+
+
+def logout_view(request):
+    logout(request)
+    return redirect("login")
+
+
+def signup_view(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        email = request.POST["email"]
+        password = request.POST["password"]
+
+        # Check if user already exists
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists.")
+            return redirect("signup")
+
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Email already in use.")
+            return redirect("signup")
+
+        # Create the user
+        user = User.objects.create_user(
+            username=username, email=email, password=password
+        )
+        user.save()
+        messages.success(request, "Account created successfully!")
+        return redirect("login")
+
+    return render(request, "signup.html")
 
 
 """
@@ -42,7 +86,7 @@ def fileNameEdit(name):
     return editedName
 
 
-# @login_required
+@login_required
 def upload_view(request):
     if request.method == "POST":
         file = request.FILES["file"]
@@ -52,10 +96,11 @@ def upload_view(request):
         file_content_type = file.content_type
 
         file_name = fileNameEdit(file.name) + file_extension
-        user_id = request.user.id if request.user.is_authenticated else "anonymous"
-        file_path = os.path.join("uploads/", user_id + "_" + file_name)
+        print(request.user)
+        user_name = str(request.user) if request.user.is_authenticated else "anonymous"
+        file_path = os.path.join("uploads/", user_name + "_" + file_name)
 
-        file_name = user_id + "_" + file_name
+        file_name = user_name + "_" + file_name
         settings.FILE_NAME = file_name
 
         with open(file_path, "wb+") as destination:
@@ -67,7 +112,7 @@ def upload_view(request):
     return render(request, "upload.html")
 
 
-# @login_required
+@login_required
 def chat_view(request):
     context = {}
     if settings.FILE_NAME == "":
