@@ -1,6 +1,6 @@
-FROM python:3.12-alpine
+FROM python:3
 
-WORKDIR /Final_Project
+WORKDIR /Smart_Doc_Intelligence
 
 COPY requirements.txt .
 
@@ -9,11 +9,11 @@ RUN pip install -r requirements.txt
 
 COPY .. ..
 
+ENV AWS_DEFAULT_REGION=ap-south-1
 
+WORKDIR /myproject_doc_intelligence
 
-WORKDIR /Final_Project/myproject_doc_intelligence
-
-CMD ["python", "manage.py", "runserver", "0.0.0.0:3000"]
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:3000"]
 
 EXPOSE 3000
 

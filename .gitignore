@@ -12,3 +12,5 @@ wheels/
 myproject_doc_intelligence/myproject_doc_intelligence/.env
 
 myproject_doc_intelligence/uploads
+
+Dockerfile

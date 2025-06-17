@@ -11,7 +11,7 @@ import os
 
 
 def home_view(request):
-    return
+    return redirect("upload")
 
 
 def login_view(request):
@@ -31,6 +31,10 @@ def login_view(request):
             return redirect("login")
 
     return render(request, "login.html")
+
+
+def no_user_found_view(request):
+    return redirect("login")
 
 
 def logout_view(request):
