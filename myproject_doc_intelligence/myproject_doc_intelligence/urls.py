@@ -24,6 +24,7 @@ from .views import (
     signup_view,
     logout_view,
     home_view,
+    no_user_found_view,
 )
 
 urlpatterns = [
@@ -34,4 +35,5 @@ urlpatterns = [
     path("signup/", signup_view, name="signup"),
     path("chat/", chat_view, name="chat"),
     path("upload/", upload_view, name="upload"),
+    path("accounts/login/", no_user_found_view, name=""),
 ]

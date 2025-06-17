@@ -6,6 +6,7 @@
         <a href="{% url 'signup' %}" class="hover:text-gray-200">Signup</a>
         <a href="{% url 'login' %}" class="hover:text-gray-200">Login</a>
         <a href="{% url 'upload' %}" class="hover:text-gray-200">Upload</a>
+        <a href="{% url 'chat' %}" class="hover:text-gray-200">Chat</a>
     </div>
     {% if user.is_authenticated %}
     <div class="flex items-center space-x-4">
